@@ -1,0 +1,3 @@
+# get mac address and post to http://localhost:8080/api/network-interfaces
+$macAddresses = Get-NetAdapter | Where-Object { $_.MacAddress -notlike "00-50-56-C0*" -and $_.MacAddress -notlike "00-15-5D*" } | Select-Object Name, @{Name='MacAddress';Expression={$_.MacAddress -replace '-', ':'}}
+Invoke-RestMethod -Uri "http://localhost:8000/api/network-interfaces" -Method Post -Body ($macAddresses | ConvertTo-Json) -ContentType "application/json"
