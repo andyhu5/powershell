@@ -1,41 +1,22 @@
 <# :
+echo "CMD script is running..."
 chcp 65001 &cls&echo off&cd /d "%~dp0"&rem encoding ANSI
 powershell -NoProfile -ExecutionPolicy bypass "[IO.File]::ReadAllText(\"%~f0\",[Text.Encoding]::GetEncoding('GB2312'))|Invoke-Expression"
 exit /b 0
 #>
-write-host "Hello World"
-
-write-host "Hello World"
+write-host 
 
 $csharpCode = @"
-using System;
-using System.Collections.Generic;
-
-public class Person
-{
-    public string Name { get; set; }
-    public int Age { get; set; }
-
-    public Person(string name, int age)
+    using System;
+    using System.Runtime.InteropServices;
+    public class DllWrapper
     {
-        Name = name;
-        Age = age;
-    }
+        [DllImport(@"C:\Users\sheng\source\repos\usePersonLibrary\x64\Release\Person.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern string Test(string msg);
 
-    public string GetGreeting()
-    {
-        return string.Format("Hello, my name is {0} and I am {1} years old.", Name, Age);
+        [DllImport(@"C:\Users\sheng\source\repos\usePersonLibrary\x64\Release\Person.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int Add(int m,int n);
     }
-
-    public static List<Person> GetSamplePeople()
-    {
-        return new List<Person>
-        {
-            new Person("Alice", 25),
-            new Person("Bob", 30)
-        };
-    }
-}
 "@
 
 try {
@@ -44,10 +25,11 @@ try {
     Write-Host "C# code compiled successfully."
 
     # Example usage of the compiled code
-    $people = [Person]::GetSamplePeople()
-    foreach ($person in $people) {
-        Write-Host $person.GetGreeting()
-    }
+    $result = [DllWrapper]::Test("Hello from PowerShell")
+    Write-Host "Result from C++ DLL: $result"
+
+    $sum = [DllWrapper]::Add(5, 10)
+    Write-Host "Sum from C++ DLL: $sum"
 }
 catch {
     Write-Host "Error compiling C# code: $_"
