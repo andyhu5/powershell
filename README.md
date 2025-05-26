@@ -1,1 +1,1 @@
-# powershell
+# Learning powershell scripts
