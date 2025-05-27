@@ -21,6 +21,7 @@ function Test-TcpPort {
 }
 
 # Test-NetConnection (tnc) examples 5
+# single-threaded and asynchronous version
 "x.com","www.baidu.com","sina.com","163.com","vip.com","sohu.com","microsoft.com","github.com" | ForEach-Object  {
     if (Test-TcpPort -ComputerName $_ -Port 80 -TimeoutSeconds 2) {
         Write-Host "{$_} Port 80 is open"

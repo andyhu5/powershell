@@ -7,7 +7,7 @@ $ProgressPreference = 'SilentlyContinue'
 
 
 # Test-NetConnection (tnc) examples 3
-"x.com" ,"www.baidu.com","sina.com","163.com","vip.com","sohu.com","microsoft.com","github.com" | tnc -p 80 -InformationAction Continue  | Select-Object ComputerName, TcpTestSucceeded
+"www.baidu.com","sina.com","163.com","vip.com","sohu.com","microsoft.com","github.com" | tnc -p 80 -InformationAction Continue  | Select-Object ComputerName, TcpTestSucceeded
 
 
 # Test-NetConnection (tnc) examples 4
@@ -19,8 +19,9 @@ $ProgressPreference = 'SilentlyContinue'
     }
 } | Format-Table -AutoSize
 
+
 # use ping to test connection
-"x.com","www.baidu.com","sina.com","163.com","vip.com","sohu.com","aws.com","github.com" | ForEach-Object -Parallel {
+"www.baidu.com","sina.com","163.com","vip.com","sohu.com","aws.com","github.com" | ForEach-Object -Parallel {
     $originalDomain = $_
     Test-Connection -ComputerName $_ -TimeoutSeconds 5 -Count 1 | 
     Select-Object @{Name='Domain';Expression={$originalDomain}},
@@ -30,7 +31,7 @@ $ProgressPreference = 'SilentlyContinue'
 
 
 # use ping to test connection
-1..100 | ForEach-Object -Parallel {
+1..5 | ForEach-Object -Parallel {
     $ip = "192.168.3.$_"
     Test-Connection -ComputerName $ip -TimeoutSeconds 5 -Count 1 -ErrorAction SilentlyContinue | 
     Select-Object @{Name='IP';Expression={$ip}},
