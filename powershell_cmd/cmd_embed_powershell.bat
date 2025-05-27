@@ -5,3 +5,5 @@ pause
 exit /b 0
 #>
 write-host "Hello World"
+write-host "This is a test of PowerShell script execution."
+write-host "Executing C# code from PowerShell..."
