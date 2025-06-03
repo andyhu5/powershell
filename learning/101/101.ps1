@@ -24,8 +24,9 @@ Get-Command -Module Microsoft.PowerShell.Management
 
 # 语句
 # where-object , Sort-Object ,Group-Object;
+# % == foreach-object
 
-1..20 | %{ [System.String] $_ } | Sort-Object
+1..20 | ForEach-Object{ [System.String] $_ } | Sort-Object
 
 1..20 | %{ [System.String] $_ }
 
@@ -246,19 +247,24 @@ Test-FileValidation -FilePath "C:\empty\file.txt"
 
 
 # data structures
+
 # Array
 $myArray = @("apple", "banana", "cherry")
+$myArray.GetType()
 # Hashtable
 $myHashtable = @{
     "Name" = "John Doe"
     "Age" = 30
     "City" = "New York"
 }
+$myHashtable.GetType()
+
 # ArrayList
 $myArrayList = New-Object System.Collections.ArrayList
 $myArrayList.Add("apple") | Out-Null
 $myArrayList.Add("banana") | Out-Null
 $myArrayList.Add("cherry") | Out-Null
+$myArrayList
 # Dictionary
 $myDictionary = [System.Collections.Generic.Dictionary[string, int]]::new()
 $myDictionary.Add("apple", 1)
@@ -300,6 +306,7 @@ $myList = [System.Collections.Generic.List[string]]@("apple", "banana", "cherry"
 
 [void][System.Reflection.Assembly]::UnsafeLoadFrom("learning\101\Math.dll")
 [Math.methods]::Add(10,20)
+
 $a=New-Object Math.Methods
 $a.Compare(10,20)
 
