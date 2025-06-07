@@ -22,20 +22,53 @@ Get-Verb | Sort-Object -Property Verb
 # 查看模块包含的命令
 Get-Command -Module Microsoft.PowerShell.Management
 
-# 语句
-# where-object , Sort-Object ,Group-Object;
-# % == foreach-object
-
-1..20 | ForEach-Object{ [System.String] $_ } | Sort-Object
-
-1..20 | %{ [System.String] $_ }
-
 Get-Verb | Sort-Object -Property Verb | Group-Object -Property Group | Sort-Object -Property Count
 
+# 循环语句
+
+# for语句
+$numbers = 1..5
+for ($i = 0; $i -lt $numbers.Length; $i++) { Write-Host "Number: $($numbers[$i])" }
+
+
+# foreach 语句
+# 优点：
+# 性能较高，因为直接访问集合，没有管道的开销。
+# 适合处理已知的、静态的集合（如数组、列表）。
+
+# 缺点：
+# 无法直接处理管道输入，需先将数据存入变量。
+# 不适合动态或实时数据流。
+
+$files = Get-ChildItem c:\temp\*.txt
+foreach ($file in $files) { Write-Host "File: $($file.Name)" }
+
+#
+ForEach-Object
+# 优点：
+# 擅长处理管道输入，适合与 PowerShell 的 cmdlet 结合（如 Get-Process、Get-ChildItem）。
+
+# 支持 -Begin、-Process、-End 块，灵活性高。
+
+# 缺点：
+# 管道操作带来性能开销，处理大数据时较慢。
 #Foreach-object , PIPE pass arguments is objects in the pipeline
 1..20 | ForEach-Object { [System.String] $_ } | Sort-Object
 # get-process and filter name like wsl
 Get-Process | Where-Object { $_.Name -like "*wsl*" } | ForEach-Object { $_.Name }
+
+1..5 | ForEach-Object -Begin {
+    $sumOfSquares = 0
+    Write-Host "Starting calculation..."
+} -Process {
+    $square = $_ * $_
+    $sumOfSquares += $square
+    Write-Host "Number: $_, Square: $square"
+} -End {
+    Write-Host "Sum of squares: $sumOfSquares"
+    Write-Host "Done!"
+}
+
 
 #PIPE管道
 
